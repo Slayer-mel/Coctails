@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Coctails</string>
+    <string name="nameDrink">Называние напитка</string>
+</resources>
