@@ -14,13 +14,24 @@ class CocktailsViewModel(
 
     val cocktailsListLiveData : MutableLiveData<List<Drink>> = MutableLiveData()
 
-     fun fetchCocktails() {
+     fun fetchAllCocktails() {
         val handler = CoroutineExceptionHandler { _, t ->
             Log.d("LOGSLOGS", "Cocktails Network Error: ${t.message}")
         }
         viewModelScope.launch(handler + Dispatchers.IO) {
             val allDrinlksResult = cocktailApi.getCocktails(c = "Cocktail")
             cocktailsListLiveData.postValue(allDrinlksResult.drinks)
+        }
+    }
+
+    fun fetchFiltreByIngredients (ingredient : String) {
+        val handler = CoroutineExceptionHandler { _, t ->
+            Log.d("CheckError", "Filtered cocktails Network Error: ${t.message}")
+        }
+
+        viewModelScope.launch(handler + Dispatchers.IO) {
+            val allFilteredCocktailsResult = cocktailApi.getFiltredCocktails(i = ingredient)
+            cocktailsListLiveData.postValue(allFilteredCocktailsResult.drinks)
         }
     }
 }

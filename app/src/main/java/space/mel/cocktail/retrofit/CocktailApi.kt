@@ -17,4 +17,9 @@ interface CocktailApi {
     suspend fun getDrinks(
         @Query ("i") i: Int
     ) : DetailedCocktailsList
+
+    @GET ("filter.php")
+    suspend fun getFiltredCocktails(
+        @Query("i") i : String
+    ) : CocktailsList
 }

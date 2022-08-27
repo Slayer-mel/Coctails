@@ -11,7 +11,8 @@
         android:label="CocktailsFragment">
         <action
             android:id="@+id/action_cocktail_fragment_to_drink_fragment"
-            app:destination="@id/drink_fragment" />
+            app:destination="@id/drink_fragment"
+            />
         <argument
             android:name="DrinkID"
             app:argType="string" />
@@ -21,6 +22,15 @@
         android:id="@+id/drink_fragment"
         android:name="space.mel.cocktail.fragment.DrinkFragment"
         android:label="DrinkFragment">
+        <action
+            android:id="@+id/action_drink_fragment_to_cocktail_fragment"
+            app:destination="@id/cocktail_fragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/nav_graph"
+            app:popUpToInclusive="true"/>
+        <argument
+            android:name="Ingredient"
+            app:argType="string" />
     </fragment>
 
 

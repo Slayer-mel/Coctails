@@ -5,10 +5,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import space.mel.cocktail.R
 import space.mel.cocktail.databinding.FragmentDrinkBinding
 import space.mel.cocktail.viewmodel.DrinkViewModel
 
@@ -32,6 +34,7 @@ class DrinkFragment : Fragment() {
         if (drinkID != null) {
             drinksViewModel.fetchDrinkInfo(drinkID)
         }
+        initClickListeners()
         initObservers()
     }
 
@@ -51,5 +54,28 @@ class DrinkFragment : Fragment() {
                     .into(drinkFragmentBinding.ivDrink)
             }
         }
+    }
+
+    fun initClickListeners() {
+        val clickListener = View.OnClickListener {
+            navigateToFirstFragment((it as TextView).text.toString())
+        }
+        drinkFragmentBinding.tvDrinkIngredient1.setOnClickListener(clickListener)
+        drinkFragmentBinding.tvDrinkIngredient2.setOnClickListener(clickListener)
+        drinkFragmentBinding.tvDrinkIngredient3.setOnClickListener(clickListener)
+        drinkFragmentBinding.tvDrinkIngredient4.setOnClickListener(clickListener)
+        drinkFragmentBinding.tvDrinkIngredient5.setOnClickListener(clickListener)
+    }
+
+    fun navigateToFirstFragment(ingredient: String) {
+        findNavController().navigate(
+            R.id.action_drink_fragment_to_cocktail_fragment,
+            Bundle().apply {
+                putString(
+                    "Ingredient",
+                    ingredient
+                )
+            }
+        )
     }
 }

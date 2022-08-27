@@ -1,17 +1,11 @@
 package space.mel.cocktail.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import space.mel.cocktail.MainRecyclerViewAdapter
 import space.mel.cocktail.R
@@ -20,7 +14,7 @@ import space.mel.cocktail.entities.Drink
 import space.mel.cocktail.viewmodel.CocktailsViewModel
 
 class CocktailsFragment : Fragment() {
-    var mainAdapter: MainRecyclerViewAdapter? = null
+    var cocktailAdapter: MainRecyclerViewAdapter? = null
     lateinit var cocktailBinding: FragmentCocktailBinding
     private val cocktailsViewModel : CocktailsViewModel by viewModel()
     override fun onCreateView(
@@ -34,37 +28,28 @@ class CocktailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val ingredient = arguments?.getString("Ingredient")
+        if (ingredient != null) {
+            cocktailsViewModel.fetchFiltreByIngredients(ingredient)
+        }else{
+            cocktailsViewModel.fetchAllCocktails()
+        }
         initAdapter()
         initObservers()
-        getData()
     }
 
 
     private fun initObservers() {
-        val view : RecyclerView = cocktailBinding.rvCocktail
-        view.setHasFixedSize(true)
-        view.setRecyclerListener {  }
-        view.setItemViewCacheSize(5)
-
         cocktailsViewModel.cocktailsListLiveData.observe(viewLifecycleOwner){
-        mainAdapter?.setItem(it)
-        }
-    }
-
-    fun getData() {
-        val handler = CoroutineExceptionHandler { _, t ->
-            Log.d("LOGSLOGS", "Network Error: ${t.message}")
-        }
-        CoroutineScope(Dispatchers.IO).launch(handler){
-        cocktailsViewModel.fetchCocktails()
+        cocktailAdapter?.setItem(it)
         }
     }
 
     fun initAdapter() {
-        mainAdapter = MainRecyclerViewAdapter(
+        cocktailAdapter = MainRecyclerViewAdapter(
             onClick = ::startDrinkID,
         )
-        cocktailBinding.rvCocktail.adapter = mainAdapter
+        cocktailBinding.rvCocktail.adapter = cocktailAdapter
     }
 
      fun startDrinkID(drinks: Drink) {

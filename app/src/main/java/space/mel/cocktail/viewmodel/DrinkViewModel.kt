@@ -4,9 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.*
-import space.mel.cocktail.entities.CocktailsList
 import space.mel.cocktail.entities.DetailedDrink
-import space.mel.cocktail.entities.Drink
 import space.mel.cocktail.retrofit.CocktailApi
 
 class DrinkViewModel(
